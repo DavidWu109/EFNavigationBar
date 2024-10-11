@@ -25,6 +25,50 @@
 //  THE SOFTWARE.
 
 import EFFoundation
+import Foundation
+
+public extension CGFloat {
+    
+    static var _topSafeAreaHeight: CGFloat = 0
+    
+    static var statusBarHeight: CGFloat = topSafeAreaHeight
+    
+    static var topSafeAreaHeight: CGFloat {
+        guard _topSafeAreaHeight == 0
+        else { return _topSafeAreaHeight }
+        
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        _topSafeAreaHeight = scene?.windows.first?.safeAreaInsets.top ?? 0
+        return _topSafeAreaHeight
+    }
+    
+    static var _bottomSafeAreaHeight: CGFloat = 0
+    
+    static var bottomSafeAreaHeight: CGFloat {
+        guard _bottomSafeAreaHeight == 0
+        else { return _bottomSafeAreaHeight }
+        
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        _bottomSafeAreaHeight = scene?.windows.first?.safeAreaInsets.bottom ?? 0
+        
+        return _bottomSafeAreaHeight
+    }
+    
+    static var tabBarHeight: CGFloat {
+        return bottomSafeAreaHeight + 44
+    }
+    
+    static var navigationBarHeight: CGFloat = 44
+    
+    static var statusBarAndNavigationBarHeight: CGFloat {
+        return topSafeAreaHeight + navigationBarHeight
+    }
+    
+    static var topSafeAreaWithoutStatusBarHeight: CGFloat {
+        return topSafeAreaHeight - 20 // 这个要跟极速确认一下
+    }
+    
+}
 
 public struct EFNavigationBarConfig {
     
@@ -46,7 +90,7 @@ public struct EFNavigationBarConfig {
     let titleHeight: CGFloat = CGFloat.navigationBarHeight
     let titleWidth: CGFloat = CGFloat.screenWidth - 2 * CGFloat.navigationBarHeight
     
-    public var buttonTitleColor: UIColor = UIApplication.shared?.keyWindow()?.tintColor ?? UIColor.black
+    public var buttonTitleColor: UIColor = UIApplication.shared.keyWindow()?.tintColor ?? UIColor.black
     public var buttonTitleSize: CGFloat = UIFont.labelFontSize {
         didSet {
             buttonTitleFont = UIFont.systemFont(ofSize: buttonTitleSize)
