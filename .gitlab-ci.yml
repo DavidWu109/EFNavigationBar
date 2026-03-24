@@ -1,0 +1,4 @@
+include:
+  - project: "mobile/echo-build"
+    file: "podspec-publish.yml"
+    ref: master
